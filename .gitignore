@@ -21,9 +21,12 @@
 # Misc
 .DS_Store
 *.pem
+data/
+!data/skill-icons/
 
 # Typescript
 *.tsbuildinfo
 
 # Dotenv and similar local-only files
 *.local
+.env

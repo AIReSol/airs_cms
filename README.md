@@ -1,9 +1,43 @@
-# Sanity Clean Content Studio
+# Overview
+Sanity studio for MLReSol
 
-Congratulations, you have now installed the Sanity Content Studio, an open-source real-time content editing environment connected to the Sanity backend.
 
-Now you can do the following things:
+## Introduction
 
-- [Read “getting started” in the docs](https://www.sanity.io/docs/introduction/getting-started?utm_source=readme)
-- [Join the community Slack](https://slack.sanity.io/?utm_source=readme)
-- [Extend and build plugins](https://www.sanity.io/docs/content-studio/extending?utm_source=readme)
+To run the sanity studio
+```bash
+npm run dev
+```
+
+# Getting started 
+
+1. Create a Sanity Studio project
+```bash
+cd sanity-studio
+npm create sanity@latest -- --dataset production --template clean --typescript --output-path .
+
+# you may may need to update sanity later  
+npm update sanity @sanity/vision
+```
+
+2. define schemas
+
+Under `schemaTypes/` define schemas for your content.
+
+3. write GROQ query
+
+Example:
+```
+*[_type == "post"]{
+  _id,
+  title,
+  slug,
+  publishedAt
+}
+```
+
+# Deployment
+
+```bash
+npm run deploy
+```
