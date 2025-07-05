@@ -1,6 +1,5 @@
 # Overview
-Sanity studio for MLReSol
-
+Content management for AI research and solutions (AIRS) with Sanity studio.
 
 ## Introduction
 
