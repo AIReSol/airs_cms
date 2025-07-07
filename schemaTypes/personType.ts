@@ -1,5 +1,6 @@
-import { defineField, defineType } from 'sanity'
-import React from 'react'
+import { defineField, defineType } from 'sanity';
+import { SKILL_CATEGORIES } from './skillIconType';
+import React from 'react';
 
 export const personType = defineType({
   name: 'person',  // internal identifier
@@ -53,6 +54,55 @@ export const personType = defineType({
       validation: Rule => Rule.required().min(10).max(1024),
     }),
     defineField({
+      name: 'careerSummary',
+      title: 'Career Summary',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'careerSumItem',
+          title: 'Career Summary Item',
+          fields: [
+            {
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: 'count',
+              title: 'Count',
+              type: 'number',
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: 'description',
+              title: 'Description',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            },
+          ],
+          preview: {
+            select: {
+              name: 'name',
+              count: 'count',
+              description: 'description',
+            },
+            prepare({ name, count, description }: {
+              name?: string;
+              count?: number;
+              description?: string;
+            }) {
+              return {
+                title: `${count}+ ${name} `,
+                subtitle: description,
+              }
+            }
+          }
+        }
+      ]
+    }),
+    defineField({
       name: 'skills',
       title: 'Skills',
       type: 'array',
@@ -63,16 +113,19 @@ export const personType = defineType({
           title: 'Technology',
           fields: [
             {
-              name: 'type',
-              title: 'Type',
+              name: 'category',
+              title: 'Category',
               type: 'string',
               validation: (rule) => rule.required(),
               options: {
                 list: [
-                  { title: 'AI', value: 'ai' },
-                  { title: 'Software Development', value: 'software-development' },
-                  { title: 'Tools', value: 'tools' },
-                  { title: 'Professional', value: 'professional' }
+                  { title: SKILL_CATEGORIES['ai'], value: 'ai' },
+                  {
+                    title: SKILL_CATEGORIES['software'],
+                    value: 'software-development'
+                  },
+                  { title: SKILL_CATEGORIES['tools'], value: 'tools' },
+                  { title: SKILL_CATEGORIES['professional'], value: 'professional' }
                 ],
                 layout: 'dropdown'
               }
@@ -107,19 +160,23 @@ export const personType = defineType({
           ],
           preview: {
             select: {
-              techName: 'skillIcon.name',
-              techIcon: 'skillIcon.icon',
+              skillName: 'skillIcon.name',
+              skillIcon: 'skillIcon.icon',
+              category: 'category',
               description: 'description',
               isFeatured: 'isFeatured'
             },
-            prepare({ skillName, skillIcon, description, isFeatured }: {
+            prepare({ skillName, skillIcon, category, description, isFeatured }: {
               skillName?: string;
               skillIcon?: string;
+              category?: keyof typeof SKILL_CATEGORIES;
               description?: string;
               isFeatured?: boolean;
             }) {
+              const categoryTitle = category ? SKILL_CATEGORIES[category] || category : 'Unknown';
+              
               return {
-                title: skillName || 'Untitled Skill',
+                title: `${categoryTitle}: ${skillName}` || 'Untitled Skill',
                 subtitle: `${isFeatured ? '⭐' : ''} ${description ? description.substring(0, 20) + '...' : 'No description'}`,
                 media: skillIcon ? React.createElement('div', {
                   style: { 

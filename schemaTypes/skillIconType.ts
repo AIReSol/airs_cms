@@ -1,6 +1,13 @@
 import { defineType, defineField } from 'sanity'
 import React from 'react';
 
+export const SKILL_CATEGORIES = {
+  'ai': 'AI',
+  'software': 'Software', 
+  'tools': 'Tools',
+  'professional': 'Professional'
+} as const;  // Makes the object and its properties readonly, literal types
+
 export const skillIconType = defineType({
   name: 'skillIcon',
   title: 'Skill',
