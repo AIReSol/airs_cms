@@ -1,14 +1,5 @@
-import 'dotenv/config';
-import { createClient } from '@sanity/client';
+import { client } from './lib/client';
 import { schemaTypes } from '../schemaTypes';
-
-const client = createClient({
-  projectId: 'v7ufktq0',
-  dataset: 'production',
-  useCdn: false,
-  apiVersion: '2023-05-03',
-  token: process.env.SANITY_API_TOKEN
-})
 
 // Extract valid types from schema definitions and add system types
 const validTypes = [
